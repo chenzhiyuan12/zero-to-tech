@@ -24,6 +24,7 @@ app.add_middleware(
     allow_origins=ALLOWED_ORIGINS,   # ← 不再写死，从配置来
     allow_credentials=True,
     allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
