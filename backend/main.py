@@ -6,6 +6,13 @@ from snownlp import SnowNLP
 from datetime import datetime, timezone
 from storage import init_db, save_record, get_history
 import uuid
+import os
+from dotenv import load_dotenv
+
+load_dotenv()                        # ← 读同目录下的 .env
+
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS").split(",")
+
 
 init_db()
 
@@ -14,11 +21,11 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
-    allow_credentials=True, 
+    allow_origins=ALLOWED_ORIGINS,   # ← 不再写死，从配置来
+    allow_credentials=True,
+    allow_methods=["*"],
 )
+
 
 def get_session_id(request: Request, response: Response) -> str:
     sid = request.cookies.get("session_id")      # 先看有没有纸条
